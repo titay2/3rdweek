@@ -14,64 +14,50 @@ module.exports= (app) =>{
 
     app.get('/cats', (req, res) => {
         Cat.find().exec().then((posts) => {
-            res.send(posts);
-        });
-    });
+        res.send(posts);
+});
+});
 
 
-  /*  app.get('/cats/:id', (req, res)=>{
-        Cat.find({id: req.body.id})
-
-            .then((cat)=> {
-                (err, cat)=> {
-                    if(err)throw err
-                    res.send(cat)
-                }
-        })
-
-    })*/
-    /*app.post('/cats/:id'.(req, res)=>{
-        if(req.body.id){
-            Cat.findByIdAndUpdate(req.body.id, {
-                // update goes here{}, (err, cat)=> {if (}
-            }
-           })
-        }
-        else {
-
-        }
-    })*/
     app.post('/cats', upload.array(), (req, res) => {
         console.log(req.body);
-        Cat.create(req.body).then(post => {
-            res.send({status: 'OK', post: post});
-        }).catch(() => {
-            res.send({status: 'error', message: 'Database error'});
-        });
-    });
+    Cat.create(req.body).then(post => {
+        res.send({status: 'OK', post: post});
+}).catch(() => {
+        res.send({status: 'error', message: 'Database error'});
+});
+});
 
-    /* var beerRoute = router.route('/beers/:beer_id');
+    app.delete('/cats/:id', (req, res) => {
+        Cat.findByIdAndRemove(req.params.id, (err) => {
+        if (err)
+        res.send(err)
+    res.json({message: 'cat has been deleted!'})
+})
+})
 
-// Create endpoint /api/beers/:beer_id for GET
-    beerRoute.get(function(req, res) {
-        // Use the Beer model to find a specific beer
-        Beer.findById(req.params.beer_id, function(err, beer) {
-            if (err)
-                res.send(err);
+    app.put('/cats/:id', upload.array(), (req, res)=> {
+        console.log(req.params.id);
+    Cat.findById(req.params.id, (err, cat)=> {
+        if (err)
+        res.send(err);
+    console.log(req.body);
+    console.log(req.body.name);
+    // Update the existing beer quantity
+    cat.name = req.body.name;
+    cat.gender = req.body.gender;
+    cat.age = req.body.age;
+    cat.weight = req.body.weight;
+    console.log(cat);
+    //cat = req.body
+    cat.save((err)=> {
+        if (err)
+        res.send(err);
 
-            res.json(beer);
-        });
-    });
-*/
-    app.get('/cats/:id', function(req, res) {
-        //const id = req.params.id
+    res.json(cat);
+});
+});
+})
 
-        Cat.findById(req.params.id, (err, cat) => {
-            if (err) throw err;
-        //res.send('Success');
-        console.log('success');
-        res.json(cat);
-        })
-
-    });
 }
+``
